@@ -33,27 +33,51 @@ var app = {
             options={ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
             app.watchId = navigator.geolocation.watchPosition(app.geolocationSuccess,app.geolocationError,options);
             app.walked_distance=0;
+            $('.geolocation').html('');
+            window.addEventListener("deviceorientation", app.orientationChange, true);
         });
         $('#stop').on('touchend',function(evt){
             $("#stop").toggleClass('invisible',true);
             $("#start").toggleClass('invisible',false);
-            $('.geolocation').html('');
+            if(app.first_position){
+                $('.geolocation').append("origin:<br/> latitude: "+app.first_position.coords.latitude+"<br /> longitudes: "+app.first_position.coords.longitude)
+            }
             navigator.geolocation.clearWatch(app.watchId);
             app.first_position=app.last_position=null;
             
         });
     },
+
+    orientationChange:function(oriEvt){
+        console.log('orientation')
+        console.log(oriEvt);
+        navigator.accelerometer.getCurrentAcceleration(app.accelerometerSuccess, app.accelerometerError);
+    },
+
+    accelerometerSuccess: function(aceleration){
+        console.log('aceleration:');
+        console.log(aceleration);
+    },
+
+    accelerometerError: function(acelerationError){
+        console.log(acelerationError);
+    },
+
     geolocationSuccess: function(position){
         if(!app.last_position || position.coords.latitude != app.last_position.coords.latitude || position.coords.longitude != app.last_position.coords.longitude){
              var distance1=app.last_position ? app.calulate_distance(position.coords,app.last_position.coords): 0;
              var distance2 = app.first_position ? app.calulate_distance(position.coords,app.first_position.coords): 0;
              var distance= "Last movement: "+distance1+"m | from origin: "+distance2+ "m | walked: "+app.walked_distance+" m";
              if (distance1 >0){
-                $('.geolocation').append('Latitude: '  + position.coords.latitude      + '<br />' +
+                $('.geolocation').html('Latitude: '  + position.coords.latitude      + '<br />' +
                             'Longitude: ' + position.coords.longitude     + '<br />' + distance+
                             '<hr />');
              }
-             
+        if (position.coords.speed!= null){
+            $('.speed').html(position.coords.speed+" m/s")
+        }
+        $('.geolocation').animate({opacity:0.3},200).delay(200).animate({opacity:1},200)
+        
         if(app.first_position==null){
             app.first_position=position;
         }
@@ -75,7 +99,7 @@ var app = {
         return (parseInt(d * 100000)/100); // meters
     },
     geolocationError:function(error){
-        console.log(error)
+        $('.speed').html(error.message)
     },
     // deviceready Event Handler
     //
