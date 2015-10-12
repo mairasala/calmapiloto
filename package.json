@@ -1,0 +1,48 @@
+{
+  "name": "calmapiloto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mairasala/calmapiloto.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mairasala/calmapiloto/issues"
+  },
+  "homepage": "https://github.com/mairasala/calmapiloto#readme",
+  "devDependencies": {
+    "browserify-shim": "^3.8.10",
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-browserify": "^4.0.1",
+    "grunt-contrib-coffee": "^0.13.0",
+    "grunt-contrib-watch": "^0.6.1"
+  },
+  "browser": {
+    "jquery": "./vendor/bower_components/jquery/jquery.js",
+    "underscore": "./vendor/bower_components/underscore/underscore.js",
+    "backbone": "./vendor/bower_components/backbone/backbone.js",
+    "bootstrap": "./vendor/bower_components/bootstrap/bootstrap.js"
+  },
+  "browserify-shim": {
+    "jquery": "$",
+    "underscore": "_",
+    "backbone": "global.Backbone",
+    "bootstrap": {
+      "depends": [
+        "jquery:$"
+      ]
+    }
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  }
+}

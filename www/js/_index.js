@@ -1,21 +1,5 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+requirejs(["cp_router"])
+requirejs(["views/init"])
 var app = {
     // Application Constructor
     initialize: function() {
@@ -31,10 +15,16 @@ var app = {
             $("#stop").toggleClass('invisible',false);
             $("#start").toggleClass('invisible',true);
             options={ maximumAge: 3000, timeout: 5000, enableHighAccuracy: true };
-            app.watchId = navigator.geolocation.watchPosition(app.geolocationSuccess,app.geolocationError,options);
+            // app.watchId = navigator.geolocation.watchPosition(app.geolocationSuccess,app.geolocationError,options);
             app.walked_distance=0;
             $('.geolocation').html('');
-            window.addEventListener("deviceorientation", app.orientationChange, true);
+            console.log('onDeviceReady');
+            if (window.DeviceOrientationEvent){
+               window.addEventListener("devicemotion", app.orientationChange, true);
+            }else{
+            console.log('orientation not supported')
+        }
+           
         });
         $('#stop').on('touchend',function(evt){
             $("#stop").toggleClass('invisible',true);
@@ -42,16 +32,51 @@ var app = {
             if(app.first_position){
                 $('.geolocation').append("origin:<br/> latitude: "+app.first_position.coords.latitude+"<br /> longitudes: "+app.first_position.coords.longitude)
             }
+            window.removeEventListener("devicemotion", app.orientationChange);
+            $('.speed').html('-')
             navigator.geolocation.clearWatch(app.watchId);
             app.first_position=app.last_position=null;
             
         });
     },
 
-    orientationChange:function(oriEvt){
-        console.log('orientation')
-        console.log(oriEvt);
-        navigator.accelerometer.getCurrentAcceleration(app.accelerometerSuccess, app.accelerometerError);
+    orientationChange:function(eventData){
+        // console.log('orientation')
+        // navigator.accelerometer.getCurrentAcceleration(app.accelerometerSuccess, app.accelerometerError);
+
+        var acceleration = eventData.acceleration;
+        var rotation = eventData.rotationRate;
+
+        var acc= Math.sqrt(Math.pow(acceleration.x,2)+Math.pow(acceleration.y,2)+Math.pow(acceleration.z,2));
+       
+
+        var cleanAcc=(Math.round(acc*100)/100)
+
+        if(cleanAcc>0.2){
+         console.log(acc);
+
+        var info, xyz = "data :[X, Y, Z]"
+        
+        info= xyz.replace('data', 'acceleration');
+        info = info.replace("X", acceleration.x);
+        info = info.replace("Y", acceleration.y);
+        info = info.replace("Z", acceleration.z);
+        console.log(info);
+
+          
+        info= xyz.replace('rotation', 'acceleration');
+        info = info.replace("X", rotation.alpha);
+        info = info.replace("Y", rotation.beta);
+        info = info.replace("Z", rotation.gamma);
+        console.log(info);
+
+
+        
+        }else{
+            cleanAcc=0;
+        }
+        $('.speed').html(cleanAcc+" m/s2")
+       
     },
 
     accelerometerSuccess: function(aceleration){
@@ -108,6 +133,7 @@ var app = {
     onDeviceReady: function() {
         // app.receivedEvent('deviceready');
         $("#start").toggleClass('invisible',false);
+        
     },
     // Update DOM on a Received Event
    
