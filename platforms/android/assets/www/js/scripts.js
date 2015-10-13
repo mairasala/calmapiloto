@@ -38,12 +38,10 @@
 (function() {
   CP.Views.Init = Backbone.View.extend({
     className: 'init',
+    template: window.HAML['backbone/templates/init'],
     render: function() {
-      this.$el.html(this.template());
+      this.$el.html(this.template({}));
       return this;
-    },
-    template: function() {
-      return "<h1>grabador de jornada</h1>";
     }
   });
 

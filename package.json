@@ -22,7 +22,9 @@
     "grunt-bower-task": "^0.4.0",
     "grunt-browserify": "^4.0.1",
     "grunt-contrib-coffee": "^0.13.0",
-    "grunt-contrib-watch": "^0.6.1"
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-haml": "^0.9.0"
   },
   "browser": {
     "jquery": "./vendor/bower_components/jquery/jquery.js",

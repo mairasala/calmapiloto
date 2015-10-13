@@ -1,8 +1,6 @@
 CP.Views.Init = Backbone.View.extend
   className:'init'
+  template: window.HAML['backbone/templates/init']
   render:->
-    @$el.html(this.template())
+    @$el.html(this.template({}))
     @
-    
-  template:->
-    "<h1>grabador de jornada</h1>"
