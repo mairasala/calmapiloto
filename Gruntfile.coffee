@@ -5,9 +5,9 @@ module.exports = (grunt)->
       install :
         options :
           targetDir : 'vendor/bower_components'
-          layout : 'byComponent'
+          layout : 'byType'
           verbose: true
-          cleanup: true
+          copy: true
     concat:
       dist:
         src: ['src/js/pre-compiled/**.js'],
@@ -41,11 +41,18 @@ module.exports = (grunt)->
           target: 'js'
         files:
           'src/js/pre-compiled/_templates.js': ['src/js/**/*.hamlc']
+    less: 
+      development: 
+        options: 
+          compress: false
+        files:
+          "www/css/bootstrap.css":"vendor/bower_components/bootstrap/bootstrap.less",
 
   grunt.loadNpmTasks 'grunt-bower-task'
   grunt.loadNpmTasks 'grunt-browserify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-less'
   grunt.loadNpmTasks 'grunt-haml'
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.registerTask 'default',['haml','browserify:vendors','coffee','concat','watch']
