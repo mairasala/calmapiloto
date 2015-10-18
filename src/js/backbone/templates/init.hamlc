@@ -1,2 +1,4 @@
-%h1 = "Jornada"
-.btn = "Gravar"
+.jumbotron
+  %h1 = "Calma Piloto!"
+  %p = "A ideia é com o celular gravar com os sensores do celular o comportamento do onibus durante um recorrido no Rio de Janeiro. Clique nos botões para indicar o tipo de atividade que esta acontecendo para ajudar a aplicação a interpretar esses dados."
+  %a#record.btn.btn-primary.btn-lg{href:'javascript:void(0);'} = "Iniciar Jornada"

@@ -9,6 +9,6 @@ CP.Router = Backbone.Router.extend
     $('#backbone_main').html(App.statics.current_view.render().el)
 
   journey:->
-    App.statics.current_view = new CP.Views.Journey(model:App.statics.journey)
+    App.statics.current_view = new CP.Views.Journey(App.statics.journey)
     $('#backbone_main').html(App.statics.current_view.render().el)
   

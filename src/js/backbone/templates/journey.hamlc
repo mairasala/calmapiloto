@@ -1,0 +1,10 @@
+.jumbotron.centered-content
+  %h2= @activity
+  .row.mtop10
+    %button#stopping.btn.btn-warning = "freando"
+  .row.mtop10
+    %button#stop.btn.btn-danger = "parado"
+  .row.mtop10
+    %button#accelerating.btn.btn-primary = "acelerando"
+  .row.mtop10
+    %button#moving.btn = "em movimento"

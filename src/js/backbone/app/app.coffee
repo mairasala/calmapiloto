@@ -9,6 +9,7 @@ window.App=
   init:->
     console.log('starting')
     App.statics.router=new CP.Router()
+    App.statics.journey= new CP.Models.Journey()
     Backbone.history.start()
 
 document.addEventListener("deviceready", App.init)
